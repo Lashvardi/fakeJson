@@ -1,0 +1,15 @@
+<form [formGroup]="form">
+    <label *ngFor="let type of dataTypes">
+      <input type="radio" [value]="type" formControlName="dataType">{{ type }}
+    </label>
+  
+    <div *ngIf="form.get('dataType')!.value === 'Company'">
+      <h3>Select fields:</h3>
+      <div formArrayName="fields">
+        <label *ngFor="let field of companyFields; let i = index">
+          <input type="checkbox" [formControlName]="i" (change)="logRequestedJson()">{{ field }}
+        </label>
+      </div>
+    </div>
+  </form>
+  
