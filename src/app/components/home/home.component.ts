@@ -1,93 +1,66 @@
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { companyFields } from 'src/app/models/Company';
 import { faker } from '@faker-js/faker';
+import { CompanyDataService } from 'src/app/services/company-data.service';
+import { GlobalDataService } from 'src/app/services/Global/global-service.service';
+import { userFields } from 'src/app/models/User';
+import { count } from 'rxjs';
+
+type DataType = 'Company' | 'User'; // add other data types as needed
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-  // Company Fields
-  companyFields = [
-    'companyName',
-    'companyDescription',
-    'companyImage',
-    'companyCategory',
-    'companyQuantity',
-    'companyEployCount',
-    'companyLocation',
-  ];
+  Json: { [key: string]: any } = {};
+
+  companyFields = companyFields;
+
+  formFields: { [K in DataType]: string[] } = {
+    Company: companyFields,
+    User: userFields,
+  };
+
+  dataTypes: DataType[] = Object.keys(this.formFields) as DataType[];
 
   form!: FormGroup;
-  dataTypes = [
-    'Carousel',
-    'Company',
-    'Events',
-    'Blog Post',
-    'Food',
-    'Product',
-    'Restaraunt',
-    'User',
-  ];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private globalService: GlobalDataService
+  ) {}
 
   ngOnInit() {
     this.form = this.fb.group({
-      dataType: [''],
+      dataType: [this.dataTypes[0]],
       fields: this.fb.array(
-        this.companyFields.map(() => new FormControl(true))
-      ), // create a control for each field, initially set to true
+        this.formFields[this.dataTypes[0]].map(() => new FormControl(true))
+      ),
+    });
+
+    this.form.get('dataType')!.valueChanges.subscribe((dataType: DataType) => {
+      const fields = this.formFields[dataType].map(() => new FormControl(true));
+      this.form.setControl('fields', this.fb.array(fields));
     });
   }
 
-  get fields() {
+  getfields() {
     return this.form.get('fields') as FormArray;
   }
 
-  // generateData() {
-  //   const data = {};
-  //   this.companyFields.forEach((field, i) => {
-  //     if (this.fields.value[i]) {
-  //       data[field] = faker.random.word();  // replace this with appropriate faker.js method
-  //     }
-  //   });
-  //   return data;
-  // }
+  generateData() {
+    const dataType = this.form.get('dataType')?.value as DataType;
+    const fields = this.formFields[dataType];
+    const fieldValues = this.getfields().value; // Get the values from the FormArray
 
-  logRequestedJson() {
-    let requestedJson: { [key: string]: any } = {};
-
-    this.companyFields.forEach((field, index) => {
-      if (this.fields.at(index).value) {
-        switch (field) {
-          case 'companyName':
-            requestedJson[field] = faker.company.name();
-            break;
-          case 'companyDescription':
-            requestedJson[field] = faker.lorem.sentences();
-            break;
-          case 'companyImage':
-            requestedJson[field] = faker.image.business();
-            break;
-          case 'companyCategory':
-            requestedJson[field] = faker.commerce.department();
-            break;
-          case 'companyQuantity':
-            requestedJson[field] = faker.datatype.number();
-            break;
-          case 'companyEployCount':
-            requestedJson[field] = faker.datatype.number();
-            break;
-          case 'companyLocation':
-            requestedJson[field] = faker.address.streetAddress();
-            break;
-          default:
-            requestedJson[field] = 'N/A';
-        }
-      }
-    });
-
-    console.log(requestedJson);
+    this.Json = this.globalService.generateJson(
+      dataType,
+      fields,
+      fieldValues,
+      50
+    );
   }
 }

@@ -8,3 +8,17 @@ export interface Company {
     companyLocation: string;
     
 }
+
+let companyData: Company = {
+    companyName: "",
+    companyDescription: "",
+    companyImage: "",
+    companyCategory: "",
+    companyQuantity: 0,
+    companyEployCount: 0,
+    companyLocation: ""
+}
+
+export let companyFields = Object.keys(companyData);
+
+
