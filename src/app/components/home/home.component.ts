@@ -6,7 +6,7 @@ import { CompanyDataService } from 'src/app/services/company-data.service';
 import { GlobalDataService } from 'src/app/services/Global/global-service.service';
 import { userFields } from 'src/app/models/User';
 import { count } from 'rxjs';
-
+import * as FileSaver from 'file-saver';
 type DataType = 'Company' | 'User'; // add other data types as needed
 
 @Component({
@@ -23,11 +23,11 @@ export class HomeComponent {
     Company: companyFields,
     User: userFields,
   };
-  Count!: number
+  Count!: number;
 
   dataTypes: DataType[] = Object.keys(this.formFields) as DataType[];
   form!: FormGroup;
-  
+
   Show = false;
 
   constructor(
@@ -41,7 +41,6 @@ export class HomeComponent {
       fields: this.fb.array(
         this.formFields[this.dataTypes[0]].map(() => new FormControl(true))
       ),
-      
     });
 
     this.form.get('dataType')!.valueChanges.subscribe((dataType: DataType) => {
@@ -49,7 +48,7 @@ export class HomeComponent {
       this.form.setControl('fields', this.fb.array(fields));
     });
     this.generateData();
-    console.log(this.Count)
+    console.log(this.Count);
   }
 
   getfields() {
@@ -74,7 +73,7 @@ export class HomeComponent {
   copyJsonData() {
     const jsonData = this.Json;
     const jsonString = JSON.stringify(jsonData, null, 2);
-    
+
     const textarea = document.createElement('textarea');
     textarea.value = jsonString;
     document.body.appendChild(textarea);
@@ -88,6 +87,11 @@ export class HomeComponent {
       this.Show = false;
     }, 1500);
   }
-  
- 
+
+  exportAsJSON() {
+    const jsonData = this.Json;
+    const jsonString = JSON.stringify(jsonData, null, 2); // Convert to JSON string with indentation
+    const blob = new Blob([jsonString], { type: 'application/json' }); // Pass the string directly to Blob
+    FileSaver.saveAs(blob, 'data.json');
+  }
 }
