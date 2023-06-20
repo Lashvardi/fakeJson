@@ -16,17 +16,19 @@ type DataType = 'Company' | 'User'; // add other data types as needed
 })
 export class HomeComponent {
   Json: { [key: string]: any } = {};
-
-  companyFields = companyFields;
+  Interface: string = '';
+  displayFormat: string = 'JSON';
 
   formFields: { [K in DataType]: string[] } = {
     Company: companyFields,
     User: userFields,
   };
+  Count!: number
 
   dataTypes: DataType[] = Object.keys(this.formFields) as DataType[];
-
   form!: FormGroup;
+  
+  Show = false;
 
   constructor(
     private fb: FormBuilder,
@@ -39,12 +41,15 @@ export class HomeComponent {
       fields: this.fb.array(
         this.formFields[this.dataTypes[0]].map(() => new FormControl(true))
       ),
+      
     });
 
     this.form.get('dataType')!.valueChanges.subscribe((dataType: DataType) => {
       const fields = this.formFields[dataType].map(() => new FormControl(true));
       this.form.setControl('fields', this.fb.array(fields));
     });
+    this.generateData();
+    console.log(this.Count)
   }
 
   getfields() {
@@ -54,13 +59,35 @@ export class HomeComponent {
   generateData() {
     const dataType = this.form.get('dataType')?.value as DataType;
     const fields = this.formFields[dataType];
-    const fieldValues = this.getfields().value; // Get the values from the FormArray
+    const fieldValues = this.getfields().value;
 
     this.Json = this.globalService.generateJson(
       dataType,
       fields,
       fieldValues,
-      50
+      this.Count
     );
+
+    this.Interface = this.globalService.generateCompanyInterface(this.Json[0]);
   }
+  // ? Copy JSON Data
+  copyJsonData() {
+    const jsonData = this.Json;
+    const jsonString = JSON.stringify(jsonData, null, 2);
+    
+    const textarea = document.createElement('textarea');
+    textarea.value = jsonString;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+
+    this.Show = true;
+
+    setTimeout(() => {
+      this.Show = false;
+    }, 1500);
+  }
+  
+ 
 }

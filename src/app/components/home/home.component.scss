@@ -1,0 +1,69 @@
+body {
+    background: #f8f9fa;
+  }
+  
+  .card {
+    width: 100%;
+    max-width: 950px;
+  }
+  
+  .json-output {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  .btn-copy {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    background-color: #1890ff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-copy i {
+    margin-right: 8px;
+  }
+  
+  .btn-copy:hover {
+    background-color: #6cb3ff;
+  }
+  
+  .copy_container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .button_box {
+    width: 100%;
+}
+
+.generate-btn {
+    background-color: #4CAF50; /* Your preferred color here */
+    border: none;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    padding: 10px 24px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.generate-btn:hover {
+    background-color: #45a049; /* Darken color on hover */
+    color: white;
+}
+
+.generate-btn:active {
+    background-color: #216e2c; /* Even darker on click */
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}

@@ -3,8 +3,7 @@ export interface Company {
     companyDescription: string;
     companyImage: string;
     companyCategory: string;
-    companyQuantity: number;
-    companyEployCount: number;
+    companyEmployeCount: number;
     companyLocation: string;
     
 }
@@ -14,8 +13,7 @@ let companyData: Company = {
     companyDescription: "",
     companyImage: "",
     companyCategory: "",
-    companyQuantity: 0,
-    companyEployCount: 0,
+    companyEmployeCount: 0,
     companyLocation: ""
 }
 

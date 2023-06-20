@@ -24,10 +24,7 @@ export class CompanyDataService {
           case 'companyCategory':
             requestedJson[field] = faker.commerce.department();
             break;
-          case 'companyQuantity':
-            requestedJson[field] = faker.datatype.number();
-            break;
-          case 'companyEmployeeCount':
+          case 'companyEmployeCount':
             requestedJson[field] = faker.datatype.number();
             break;
           case 'companyLocation':
@@ -57,4 +54,33 @@ export class CompanyDataService {
 
     return companyDataArray;
   }
+
+  generateCompanyInterface(json: { [key: string]: any }): string {
+    const getType = (value: any) => {
+      if (Array.isArray(value)) {
+        return 'any[]';
+      } else if (value === null) {
+        return 'null';
+      } else if (typeof value === 'object') {
+        let objInterface = "{ ";
+        for (const key in value) {
+          objInterface += `${key}: ${getType(value[key])}, `;
+        }
+        objInterface += "}";
+        return objInterface;
+      } else {
+        return typeof value;
+      }
+    }
+  
+    let tsInterface = 'export interface Company {\n';
+    for (const key in json) {
+      tsInterface += `  ${key}: ${getType(json[key])};\n`;
+    }
+    tsInterface += '}';
+  
+    return tsInterface;
+  }
+  
+  
 }

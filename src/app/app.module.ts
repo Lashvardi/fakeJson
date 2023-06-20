@@ -13,12 +13,19 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import {NzAlertModule} from 'ng-zorro-antd/alert';
 
+import { HighlightInterfacePipe } from './pipes/highlight-interface.pipe';
+import { HighlightJSONPipe } from './pipes/highlight-json.pipe';
 registerLocaleData(en);
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
+    HighlightInterfacePipe,
+    HighlightJSONPipe,
   ],
   imports: [
     BrowserModule,
@@ -28,7 +35,10 @@ registerLocaleData(en);
     HttpClientModule,
     BrowserAnimationsModule,
     NzFormModule,
-    NzRadioModule
+    NzRadioModule,
+    NzDropDownModule,
+    NzButtonModule,
+    NzAlertModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US }

@@ -21,6 +21,8 @@ export class GlobalDataService {
     return this.userDataService.generateMultipleUserData(userFields, fieldValues, count);
   }
 
+
+
   generateJson(dataType: string, fields: string[], fieldValues: any[], count: number) {
     switch (dataType) {
       case 'Company':
@@ -30,5 +32,12 @@ export class GlobalDataService {
       default:
         return {};
     }
+  }
+
+
+  //? Generating Interfaces
+
+  generateCompanyInterface(json: { [key: string]: any }) {
+    return this.companyDataService.generateCompanyInterface(json);
   }
 }

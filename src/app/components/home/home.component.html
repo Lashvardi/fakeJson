@@ -1,24 +1,95 @@
-<form [formGroup]="form">
-  <label *ngFor="let type of dataTypes">
-    <input type="radio" [value]="type" formControlName="dataType" (change)="generateData()">{{ type }}
-  </label>
 
-  <div *ngIf="form.get('dataType')!.value === 'Company'">
-    <h3>Select fields:</h3>
-    <div formArrayName="fields">
-      <label *ngFor="let field of formFields.Company; let i = index">
-        <input type="checkbox" [formControlName]="i" (change)="generateData()">{{ field }}
-      </label>
+
+<div
+  class="container-fluid d-flex align-items-center justify-content-center"
+>
+
+  <div class="card border-primary shadow">
+    <div class="card-header bg-primary text-white"><i style="font-size: 24px;" class="bi bi-filetype-json"></i> Angular Fake JSON</div>
+    <div class="card-body">
+      <div class="form-group">
+        <label for="count">Count:</label>
+        <input 
+          id="count" 
+          class="form-control" 
+          type="number" 
+          min="1" 
+          [(ngModel)]="Count"
+        />
+      </div>
+      <form [formGroup]="form">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <label *ngFor="let type of dataTypes">
+              <input
+                class="mr-2"
+                type="radio"
+                [value]="type"
+                formControlName="dataType"
+              />
+              {{ type }}
+            </label>
+          </div>
+        </div>
+
+        <div *ngIf="form.get('dataType')!.value === 'Company'" class="mt-4">
+          <h4>Select Company fields:</h4>
+          <div formArrayName="fields" class="d-flex flex-wrap justify-content-between">
+            <div class="form-check my-2 mr-3" *ngFor="let field of formFields.Company; let i = index">
+              <input class="form-check-input" id="companyField{{i}}" type="checkbox" [formControlName]="i"/>
+              <label class="form-check-label" for="companyField{{i}}">{{ field }}</label>
+            </div>
+          </div>
+        </div>
+        
+        <div *ngIf="form.get('dataType')!.value === 'User'" class="mt-4">
+          <h4>Select User fields:</h4>
+          <div formArrayName="fields" class="d-flex flex-wrap justify-content-between">
+            <div class="form-check my-2 mr-3" *ngFor="let field of formFields.User; let i = index">
+              <input class="form-check-input" id="userField{{i}}" type="checkbox" [formControlName]="i"/>
+              <label class="form-check-label" for="userField{{i}}">{{ field }}</label>
+            </div>
+          </div>
+        </div>
+        
+      </form>
+      <div class="button_box d-flex justify-content-center mt-3">
+        <button (click)="generateData()" class="btn generate-btn">Generate</button>
+    </div>
+    
+      <div class="d-flex justify-content-between align-items-center mt-4">
+        <div nz-dropdown nzClickHide="false" [nzDropdownMenu]="menu" class="mt-3">
+          <button nz-button nzType="primary" nzShape="round" nz-dropdown>Display Format: {{displayFormat}}</button>
+        </div>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+          <ul nz-menu>
+            <li nz-menu-item (click)="displayFormat='Interface'">Interface</li>
+            <li nz-menu-item (click)="displayFormat='JSON'">JSON</li>
+          </ul>
+        </nz-dropdown-menu>
+        
+        
+        <div class="copy_container">
+          <button (click)="copyJsonData()" *ngIf="displayFormat == 'JSON'"class="btn btn-copy">
+            <i class="bi bi-files"></i> Copy
+          </button>
+          <button *ngIf="displayFormat == 'Interface'"class="btn btn-copy">
+            <i class="bi bi-files"></i> Copy
+          </button>
+        </div>
+        
+        
+      </div>
+
+      <div *ngIf="displayFormat === 'Interface'" class="mt-4 bg-white p-3 json-output border rounded">
+        <pre [innerHtml]="Interface | highlightInterface : 'typescript'"></pre>
+      </div>
+
+
+      <div *ngIf="displayFormat === 'JSON'" class="mt-4">
+        <pre [innerHTML]="Json | json | highlightJSON" class="bg-white p-3 json-output border rounded"></pre>
+      </div>
     </div>
   </div>
-  <div *ngIf="form.get('dataType')!.value === 'User'">
-    <h3>Select fields:</h3>
-    <div formArrayName="fields">
-      <label *ngFor="let field of formFields.User; let i = index">
-        <input type="checkbox" [formControlName]="i" (change)="generateData()">{{ field }}
-      </label>
-    </div>
-  </div>
-</form>
+</div>
 
-<pre>{{ Json | json }}</pre>

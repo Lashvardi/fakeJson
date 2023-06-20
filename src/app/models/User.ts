@@ -10,6 +10,7 @@ export interface User {
   jobArea: string;
   zodiacSign: string;
   jobTitle: string;
+  age: number;
 }
 
 let userData: User = {
@@ -24,6 +25,7 @@ let userData: User = {
   jobArea: '',
   zodiacSign: '',
   jobTitle: '',
+  age: 0,
 };
 
 export let userFields = Object.keys(userData);

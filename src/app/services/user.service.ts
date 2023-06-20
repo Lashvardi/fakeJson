@@ -48,6 +48,9 @@ export class UserDataService {
           case 'jobTitle':
             requestedJson[field] = faker.name.jobTitle();
             break;
+          case 'age':
+            requestedJson[field] = Math.floor(Math.random() * 100) + 1;
+            break;
           default:
             requestedJson[field] = 'N/A';
         }
