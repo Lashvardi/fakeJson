@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { companyFields } from 'src/app/models/Company';
-import { faker } from '@faker-js/faker';
-import { CompanyDataService } from 'src/app/services/company-data.service';
 import { GlobalDataService } from 'src/app/services/Global/global-service.service';
 import { userFields } from 'src/app/models/User';
-import { count } from 'rxjs';
 import * as FileSaver from 'file-saver';
 type DataType = 'Company' | 'User'; // add other data types as needed
 
@@ -90,8 +87,8 @@ export class HomeComponent {
 
   exportAsJSON() {
     const jsonData = this.Json;
-    const jsonString = JSON.stringify(jsonData, null, 2); // Convert to JSON string with indentation
-    const blob = new Blob([jsonString], { type: 'application/json' }); // Pass the string directly to Blob
+    const jsonString = JSON.stringify(jsonData, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
     FileSaver.saveAs(blob, 'data.json');
   }
 }
